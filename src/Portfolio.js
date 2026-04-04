@@ -4,19 +4,19 @@ const projects = [
   {
     title: "E-Commerce Platform",
     desc: "Full-stack shopping app with cart, payments & admin dashboard.",
-    tech: ["React", "Node.js", "MongoDB"],
+    tech: ["React", "Node.js", "MySQL"],
     color: "#1a1a2e",
   },
+  // {
+  //   title: "Weather Dashboard",
+  //   desc: "Real-time weather app with beautiful animated data visualizations.",
+  //   tech: ["React", "D3.js", "OpenWeather API"],
+  //   color: "#16213e",
+  // },
   {
-    title: "Weather Dashboard",
-    desc: "Real-time weather app with beautiful animated data visualizations.",
-    tech: ["React", "D3.js", "OpenWeather API"],
-    color: "#16213e",
-  },
-  {
-    title: "Task Manager",
+    title: "Event Managment",
     desc: "Kanban-style productivity tool with drag & drop and team collaboration.",
-    tech: ["Next.js", "PostgreSQL", "Socket.io"],
+    tech: ["Djongo", "MySQL","fulter", "Socket.io"],
     color: "#0f3460",
   },
   {
@@ -29,10 +29,10 @@ const projects = [
 
 const skills = [
   { name: "React / Next.js", level: 92 },
-  { name: "Node.js / Express", level: 85 },
+  { name: "Node.js / Express", level: 90 },
   { name: "TypeScript", level: 80 },
-  { name: "UI/UX Design", level: 75 },
-  { name: "PostgreSQL / MongoDB", level: 78 },
+  { name: "UI/UX Design", level: 80 },
+  { name: "PostgreSQL / MySQL", level: 90 },
 ];
 
 const navLinks = ["About", "Skills", "Projects", "Contact"];
@@ -117,7 +117,7 @@ export default function Portfolio() {
             background: "linear-gradient(135deg, #6366f1, #a78bfa)",
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent"
           }}>
-            Alex.dev
+            dev Desire
           </span>
           <div style={{ display: "flex", gap: "4px" }}>
             {navLinks.map(link => (
@@ -156,10 +156,10 @@ export default function Portfolio() {
                   Full-Stack Developer
                 </p>
                 <h1 style={{ fontSize: "clamp(2rem, 5vw, 3rem)", fontWeight: 700, margin: "0 0 8px", lineHeight: 1.1 }}>
-                  Alex Johnson
+                  Desire MUGISHA
                 </h1>
                 <p style={{ color: "#94a3b8", margin: 0, fontSize: "15px" }}>
-                  Based in San Francisco, CA
+                  Based in  Kigali RWANDA
                 </p>
               </div>
             </div>
@@ -170,15 +170,15 @@ export default function Portfolio() {
               borderRadius: "16px", padding: "2rem", marginBottom: "2rem"
             }}>
               <p style={{ lineHeight: 1.8, color: "#cbd5e1", margin: 0, fontSize: "16px" }}>
-                I build fast, beautiful, and accessible web applications. With 5+ years of experience, I specialize in React ecosystems and backend services. I care deeply about clean code, great UX, and shipping products people love.
+                I build fast, beautiful, and accessible web applications. With 3+ years of experience, I specialize in React ecosystems and backend services. I care deeply about clean code, great UX, and shipping products people love.
               </p>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1rem" }}>
               {[
-                { label: "Projects Shipped", value: "40+" },
-                { label: "Years Experience", value: "5+" },
-                { label: "Happy Clients", value: "28" },
+                { label: "Projects Shipped", value: "10+" },
+                { label: "Years Experience", value: "3+" },
+                { label: "Happy Clients", value: "10" },
                 { label: "Open Source Stars", value: "1.2k" },
               ].map(({ label, value }) => (
                 <div key={label} style={{
