@@ -117,7 +117,7 @@ export default function Portfolio() {
             background: "linear-gradient(135deg, #6366f1, #a78bfa)",
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent"
           }}>
-            dev Desire
+            MugishaDev
           </span>
           <div style={{ display: "flex", gap: "4px" }}>
             {navLinks.map(link => (
