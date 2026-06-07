@@ -2,13 +2,86 @@ import { useState } from "react";
 
 const projects = [
   {
-    title: "E-Commerce Platform",
+    title: "MyShop – E-Commerce Platform",
     desc: "Full-stack shopping app with multi-role auth, cart, wishlist, orders & admin dashboard.",
     tech: ["React", "Node.js", "MySQL"],
     icon: "🛍️",
     details: {
       overview:
-        "A production-ready e-commerce web app built with React and Node.js. It supports three distinct user roles — Admin, Courier, and Customer — each with their own dashboard and access controls.",
+        "MyShop is a production-ready e-commerce web app built with React and Node.js. It supports three distinct user roles — Admin, Courier, and Customer — each with their own dashboard and access controls. Every screen was designed with a clean, modern aesthetic: a dark-toned palette, smooth micro-animations, and a responsive layout that works seamlessly across desktop and mobile.",
+
+      uiux: {
+        heading: "UI / UX Design Highlights",
+        description:
+          "MyShop was built with a strong focus on visual consistency and intuitive user flows. The design follows a dark-first theme with indigo accent colors, card-based layouts, and clear visual hierarchy across all three user roles.",
+        principles: [
+          {
+            icon: "🎨",
+            label: "Design System",
+            text: "Unified color palette (deep navy backgrounds, indigo-purple accents, slate typography) applied consistently across all pages. Custom reusable components — buttons, badges, input fields, modals — keep the UI cohesive.",
+          },
+          {
+            icon: "🧭",
+            label: "Navigation & Routing",
+            text: "Role-aware navigation: the Navbar only appears on public pages. Protected routes redirect based on user role — couriers go to their dashboard, regular users to theirs, admins to the admin panel.",
+          },
+          {
+            icon: "✨",
+            label: "Micro-Animations",
+            text: "Subtle hover lifts on product cards, fade-in modals, and slide-up transitions on content reveal. Animations use CSS keyframes (fadeIn, slideUp, fadeUp) for smooth, performant motion without layout jank.",
+          },
+          {
+            icon: "📱",
+            label: "Responsive Layout",
+            text: "Fully mobile-friendly. Grid layouts use auto-fit with minmax to adapt from 1-column mobile views to multi-column desktop grids. Touch targets are appropriately sized and accessible.",
+          },
+          {
+            icon: "🔄",
+            label: "User Flows",
+            text: "Streamlined 3-step checkout. Cart and wishlist update in real-time with instant UI feedback. Order tracking provides clear status labels. Password recovery is a simple 2-screen email → reset flow.",
+          },
+          {
+            icon: "🛡️",
+            label: "Auth UX",
+            text: "Admins go through a 2-step OTP verification flow. Google OAuth offers one-click sign-in for customers. Session state is persisted intelligently: admin sessions use sessionStorage for security, user sessions use localStorage for convenience.",
+          },
+        ],
+        screens: [
+          {
+            name: "Product Listing",
+            desc: "Grid of cards with image, name, price, and quick-add-to-cart. Filters and category tabs at the top.",
+          },
+          {
+            name: "Product Detail",
+            desc: "Full image, description, size/variant selector, add to cart/wishlist CTAs, and related products below.",
+          },
+          {
+            name: "Cart Page",
+            desc: "Line items with quantity stepper, remove option, subtotal calculation, and a prominent checkout button.",
+          },
+          {
+            name: "Checkout / Order Form",
+            desc: "Delivery address form, order summary panel, and payment section in a clean 2-column layout.",
+          },
+          {
+            name: "User Dashboard",
+            desc: "Welcome banner, recent orders list, quick links to Profile, Wishlist, and My Orders.",
+          },
+          {
+            name: "Admin Dashboard",
+            desc: "Data tables for products, users, and orders with CRUD actions. Stats overview at the top.",
+          },
+          {
+            name: "Courier Dashboard",
+            desc: "Assigned deliveries list with status update controls and order detail drawers.",
+          },
+          {
+            name: "Auth Screens",
+            desc: "Minimal centered card layout for Login, Signup, OTP verify, and Forgot/Reset password flows.",
+          },
+        ],
+      },
+
       features: [
         { icon: "🔐", label: "Multi-Role Auth", text: "Admin login with OTP verification, Google OAuth for users, and role-based route guards." },
         { icon: "🛒", label: "Cart & Wishlist", text: "Persistent cart and wishlist with real-time updates and a smooth checkout flow." },
@@ -17,7 +90,12 @@ const projects = [
         { icon: "🔑", label: "Password Recovery", text: "Forgot/reset password flow plus Google sign-in integration." },
         { icon: "📱", label: "Responsive UI", text: "Clean, mobile-friendly design with a shared Navbar and Footer on public pages." },
       ],
-      pages: ["Home", "About", "Services", "Contact", "Products", "Cart", "Wishlist", "My Orders", "Profile", "Admin Dashboard", "Courier Dashboard"],
+      pages: [
+        "Home", "About", "Services", "Contact", "Products", "Product Detail",
+        "Cart", "Checkout", "Wishlist", "My Orders", "Profile",
+        "User Dashboard", "Admin Dashboard", "Courier Dashboard",
+        "Login", "Signup", "Verify OTP", "Forgot Password", "Reset Password",
+      ],
     },
   },
   {
@@ -58,6 +136,20 @@ const projects = [
 
 function Modal({ project, onClose }) {
   const d = project.details;
+  const [activeTab, setActiveTab] = useState("uiux");
+
+  const tabStyle = (tab) => ({
+    padding: "6px 16px",
+    borderRadius: "999px",
+    border: "none",
+    cursor: "pointer",
+    fontSize: "13px",
+    fontWeight: 500,
+    transition: "all 0.2s",
+    background: activeTab === tab ? "rgba(99,102,241,0.2)" : "transparent",
+    color: activeTab === tab ? "#a78bfa" : "#64748b",
+  });
+
   return (
     <div
       onClick={onClose}
@@ -77,9 +169,9 @@ function Modal({ project, onClose }) {
           border: "1px solid rgba(99,102,241,0.25)",
           borderRadius: "20px",
           padding: "2rem",
-          maxWidth: "640px",
+          maxWidth: "680px",
           width: "100%",
-          maxHeight: "85vh",
+          maxHeight: "88vh",
           overflowY: "auto",
           position: "relative",
           animation: "slideUp 0.3s cubic-bezier(0.16,1,0.3,1) both",
@@ -98,7 +190,7 @@ function Modal({ project, onClose }) {
         >✕</button>
 
         {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.2rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
           <div style={{
             width: "48px", height: "48px", borderRadius: "12px",
             background: "linear-gradient(135deg, #6366f1, #a78bfa)",
@@ -124,47 +216,190 @@ function Modal({ project, onClose }) {
           {d.overview}
         </p>
 
-        {/* Features */}
-        <h3 style={{
-          fontSize: "12px", fontWeight: 600, color: "#6366f1",
-          textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
-        }}>
-          Key Features
-        </h3>
-        <div style={{
-          display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "0.75rem", marginBottom: "1.5rem",
-        }}>
-          {d.features.map(f => (
-            <div key={f.label} style={{
+        {/* Tabs — only for MyShop which has uiux */}
+        {d.uiux && (
+          <>
+            <div style={{
+              display: "flex", gap: "4px", marginBottom: "1.5rem",
               background: "rgba(255,255,255,0.03)",
+              borderRadius: "999px", padding: "4px",
               border: "1px solid rgba(255,255,255,0.07)",
-              borderRadius: "12px", padding: "0.9rem",
+              width: "fit-content",
             }}>
-              <div style={{ fontSize: "18px", marginBottom: "6px" }}>{f.icon}</div>
-              <div style={{ fontSize: "13px", fontWeight: 600, color: "#e2e8f0", marginBottom: "4px" }}>{f.label}</div>
-              <div style={{ fontSize: "12px", color: "#64748b", lineHeight: 1.6 }}>{f.text}</div>
+              <button style={tabStyle("uiux")} onClick={() => setActiveTab("uiux")}>UI / UX</button>
+              <button style={tabStyle("features")} onClick={() => setActiveTab("features")}>Features</button>
+              <button style={tabStyle("pages")} onClick={() => setActiveTab("pages")}>Pages</button>
             </div>
-          ))}
-        </div>
 
-        {/* Pages */}
-        <h3 style={{
-          fontSize: "12px", fontWeight: 600, color: "#6366f1",
-          textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
-        }}>
-          Pages & Screens
-        </h3>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-          {d.pages.map(pg => (
-            <span key={pg} style={{
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: "999px", padding: "5px 13px",
-              fontSize: "12px", color: "#94a3b8",
-            }}>{pg}</span>
-          ))}
-        </div>
+            {/* ── UI/UX TAB ── */}
+            {activeTab === "uiux" && (
+              <div style={{ animation: "fadeIn 0.2s ease both" }}>
+                <p style={{ color: "#94a3b8", fontSize: "14px", lineHeight: 1.8, marginBottom: "1.5rem" }}>
+                  {d.uiux.description}
+                </p>
+
+                {/* Design principles */}
+                <h3 style={{
+                  fontSize: "12px", fontWeight: 600, color: "#6366f1",
+                  textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
+                }}>
+                  Design Principles
+                </h3>
+                <div style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
+                  gap: "0.75rem", marginBottom: "1.8rem",
+                }}>
+                  {d.uiux.principles.map(p => (
+                    <div key={p.label} style={{
+                      background: "rgba(255,255,255,0.03)",
+                      border: "1px solid rgba(255,255,255,0.07)",
+                      borderRadius: "12px", padding: "1rem",
+                    }}>
+                      <div style={{ fontSize: "18px", marginBottom: "6px" }}>{p.icon}</div>
+                      <div style={{ fontSize: "13px", fontWeight: 600, color: "#e2e8f0", marginBottom: "4px" }}>{p.label}</div>
+                      <div style={{ fontSize: "12px", color: "#64748b", lineHeight: 1.6 }}>{p.text}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Screen-by-screen walkthrough */}
+                <h3 style={{
+                  fontSize: "12px", fontWeight: 600, color: "#6366f1",
+                  textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
+                }}>
+                  Screen Walkthrough
+                </h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                  {d.uiux.screens.map((s, i) => (
+                    <div key={s.name} style={{
+                      display: "flex", gap: "1rem", alignItems: "flex-start",
+                      padding: "0.75rem 1rem",
+                      background: "rgba(255,255,255,0.02)",
+                      border: "1px solid rgba(255,255,255,0.05)",
+                      borderRadius: "10px",
+                    }}>
+                      <div style={{
+                        minWidth: "22px", height: "22px",
+                        borderRadius: "6px",
+                        background: "rgba(99,102,241,0.15)",
+                        color: "#a78bfa",
+                        fontSize: "11px", fontWeight: 700,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        flexShrink: 0,
+                      }}>
+                        {i + 1}
+                      </div>
+                      <div>
+                        <div style={{ fontSize: "13px", fontWeight: 600, color: "#e2e8f0", marginBottom: "3px" }}>
+                          {s.name}
+                        </div>
+                        <div style={{ fontSize: "12px", color: "#64748b", lineHeight: 1.6 }}>
+                          {s.desc}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ── FEATURES TAB ── */}
+            {activeTab === "features" && (
+              <div style={{ animation: "fadeIn 0.2s ease both" }}>
+                <h3 style={{
+                  fontSize: "12px", fontWeight: 600, color: "#6366f1",
+                  textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
+                }}>
+                  Key Features
+                </h3>
+                <div style={{
+                  display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                  gap: "0.75rem",
+                }}>
+                  {d.features.map(f => (
+                    <div key={f.label} style={{
+                      background: "rgba(255,255,255,0.03)",
+                      border: "1px solid rgba(255,255,255,0.07)",
+                      borderRadius: "12px", padding: "0.9rem",
+                    }}>
+                      <div style={{ fontSize: "18px", marginBottom: "6px" }}>{f.icon}</div>
+                      <div style={{ fontSize: "13px", fontWeight: 600, color: "#e2e8f0", marginBottom: "4px" }}>{f.label}</div>
+                      <div style={{ fontSize: "12px", color: "#64748b", lineHeight: 1.6 }}>{f.text}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ── PAGES TAB ── */}
+            {activeTab === "pages" && (
+              <div style={{ animation: "fadeIn 0.2s ease both" }}>
+                <h3 style={{
+                  fontSize: "12px", fontWeight: 600, color: "#6366f1",
+                  textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
+                }}>
+                  Pages & Screens
+                </h3>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {d.pages.map(pg => (
+                    <span key={pg} style={{
+                      background: "rgba(255,255,255,0.05)",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      borderRadius: "999px", padding: "5px 13px",
+                      fontSize: "12px", color: "#94a3b8",
+                    }}>{pg}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Fallback for projects without uiux (Event Management, Portfolio Builder) */}
+        {!d.uiux && (
+          <>
+            <h3 style={{
+              fontSize: "12px", fontWeight: 600, color: "#6366f1",
+              textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
+            }}>
+              Key Features
+            </h3>
+            <div style={{
+              display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "0.75rem", marginBottom: "1.5rem",
+            }}>
+              {d.features.map(f => (
+                <div key={f.label} style={{
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  borderRadius: "12px", padding: "0.9rem",
+                }}>
+                  <div style={{ fontSize: "18px", marginBottom: "6px" }}>{f.icon}</div>
+                  <div style={{ fontSize: "13px", fontWeight: 600, color: "#e2e8f0", marginBottom: "4px" }}>{f.label}</div>
+                  <div style={{ fontSize: "12px", color: "#64748b", lineHeight: 1.6 }}>{f.text}</div>
+                </div>
+              ))}
+            </div>
+
+            <h3 style={{
+              fontSize: "12px", fontWeight: 600, color: "#6366f1",
+              textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
+            }}>
+              Pages & Screens
+            </h3>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+              {d.pages.map(pg => (
+                <span key={pg} style={{
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  borderRadius: "999px", padding: "5px 13px",
+                  fontSize: "12px", color: "#94a3b8",
+                }}>{pg}</span>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -236,6 +471,7 @@ export default function Projects() {
       <style>{`
         @keyframes fadeIn  { from { opacity: 0 } to { opacity: 1 } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(24px) } to { opacity: 1; transform: translateY(0) } }
+        @keyframes fadeUp  { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: translateY(0) } }
       `}</style>
     </>
   );
