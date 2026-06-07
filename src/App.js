@@ -77,7 +77,7 @@ export default function App() {
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
             flexShrink: 0
           }}>
-            MugishaDev
+            MUGISHA Developer
           </span>
 
           {/* Desktop nav links */}
