@@ -22,14 +22,14 @@ const projects = [
   },
   {
     title: "Event Management",
-    desc: "Kanban-style productivity tool with drag & drop and real-time team collaboration.",
+    desc: "Kanban-style productivity tool with real-time team collaboration.",
     tech: ["Django", "MySQL", "Flutter", "Socket.io"],
     icon: "✅",
     details: {
       overview:
         "A cross-platform event and task management system with a Django REST backend and a Flutter mobile frontend, featuring real-time updates via Socket.io.",
       features: [
-        { icon: "📋", label: "Kanban Board", text: "Drag-and-drop task management across custom columns and stages." },
+        { icon: "📋", label: "Kanban Board", text: "Task management across custom columns and stages." },
         { icon: "⚡", label: "Real-Time Sync", text: "Socket.io-powered live collaboration — changes reflect instantly for all team members." },
         { icon: "📅", label: "Event Scheduling", text: "Create, assign, and track events with deadlines and priority levels." },
         { icon: "👥", label: "Team Roles", text: "Role-based permissions for managers and team members." },
@@ -39,14 +39,14 @@ const projects = [
   },
   {
     title: "Portfolio Builder",
-    desc: "Drag-and-drop tool to create stunning portfolios in minutes.",
+    desc: "A tool to create stunning portfolios in minutes.",
     tech: ["Vue.js", "Firebase", "Tailwind"],
     icon: "🎨",
     details: {
       overview:
-        "A no-code portfolio builder where users drag, drop, and customize sections to produce a published portfolio site — backed by Firebase for auth and real-time storage.",
+        "A no-code portfolio builder where users customize sections to produce a published portfolio site — backed by Firebase for auth and real-time storage.",
       features: [
-        { icon: "🖱️", label: "Drag & Drop Editor", text: "Intuitive block-based editor to arrange sections without writing code." },
+        { icon: "🖱️", label: "Visual Editor", text: "Intuitive block-based editor to arrange sections without writing code." },
         { icon: "☁️", label: "Firebase Backend", text: "Real-time database and authentication so portfolios sync instantly across devices." },
         { icon: "🎨", label: "Theme System", text: "Multiple color themes and font pairings to match personal brand." },
         { icon: "🔗", label: "Instant Publish", text: "One-click publish to a shareable public URL." },
