@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useColors } from "./ThemeContext";
 
 export default function Contact() {
+  const c = useColors();
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
+  const [hover, setHover] = useState(false);
 
   const handleSend = () => {
     if (formData.name && formData.email && formData.message) {
@@ -12,38 +15,51 @@ export default function Contact() {
     }
   };
 
+  const inputStyle = {
+    width: "100%",
+    background: c.inputBg,
+    border: `1px solid ${c.border}`,
+    borderRadius: "10px",
+    padding: "10px 14px",
+    color: c.text,
+    fontSize: "14px",
+    outline: "none",
+    boxSizing: "border-box",
+    fontFamily: "inherit",
+    transition: "background 0.35s ease, border-color 0.35s ease, color 0.35s ease",
+  };
+
   return (
     <div style={{ animation: "fadeUp 0.5s ease both" }}>
-      <h2 style={{ fontSize: "1.8rem", fontWeight: 700, marginBottom: "0.5rem" }}>Contact</h2>
-      <p style={{ color: "#64748b", marginBottom: "2.5rem", fontSize: "15px" }}>
+      <h2 style={{ fontSize: "1.8rem", fontWeight: 700, marginBottom: "0.5rem", color: c.text }}>
+        Contact
+      </h2>
+      <p style={{ color: c.textSubtle, marginBottom: "2.5rem", fontSize: "15px" }}>
         Let's build something together
       </p>
+
       <div style={{
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.07)",
-        borderRadius: "16px", padding: "2rem", maxWidth: "520px"
+        background: c.cardBg,
+        border: `1px solid ${c.border}`,
+        borderRadius: "16px", padding: "2rem", maxWidth: "520px",
+        transition: "background 0.35s ease, border-color 0.35s ease",
       }}>
         {["name", "email", "message"].map(field => (
           <div key={field} style={{ marginBottom: "1.2rem" }}>
             <label style={{
-              display: "block", fontSize: "13px", color: "#94a3b8",
-              marginBottom: "6px", textTransform: "capitalize"
+              display: "block", fontSize: "13px", color: c.textMuted,
+              marginBottom: "6px", textTransform: "capitalize",
             }}>
               {field}
             </label>
+
             {field === "message" ? (
               <textarea
                 rows={4}
                 value={formData[field]}
                 onChange={e => setFormData(prev => ({ ...prev, [field]: e.target.value }))}
                 placeholder={`Your ${field}...`}
-                style={{
-                  width: "100%", background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: "10px", padding: "10px 14px",
-                  color: "#e2e8f0", fontSize: "14px", resize: "vertical",
-                  outline: "none", boxSizing: "border-box", fontFamily: "inherit"
-                }}
+                style={{ ...inputStyle, resize: "vertical" }}
               />
             ) : (
               <input
@@ -51,25 +67,25 @@ export default function Contact() {
                 value={formData[field]}
                 onChange={e => setFormData(prev => ({ ...prev, [field]: e.target.value }))}
                 placeholder={`Your ${field}...`}
-                style={{
-                  width: "100%", background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: "10px", padding: "10px 14px",
-                  color: "#e2e8f0", fontSize: "14px",
-                  outline: "none", boxSizing: "border-box", fontFamily: "inherit"
-                }}
+                style={inputStyle}
               />
             )}
           </div>
         ))}
+
         <button
           onClick={handleSend}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
           style={{
             background: "linear-gradient(135deg, #6366f1, #a78bfa)",
             border: "none", borderRadius: "10px",
             padding: "11px 28px", color: "#fff",
             fontSize: "14px", fontWeight: 600,
-            cursor: "pointer", transition: "opacity 0.2s"
+            cursor: "pointer", transition: "all 0.25s",
+            opacity: hover ? 0.88 : 1,
+            transform: hover ? "translateY(-1px)" : "none",
+            boxShadow: hover ? "0 6px 20px rgba(99,102,241,0.35)" : "none",
           }}
         >
           {sent ? "✓ Sent!" : "Send Message"}

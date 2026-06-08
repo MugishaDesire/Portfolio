@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useColors } from "./ThemeContext";
 
 const projects = [
   {
@@ -47,48 +48,24 @@ const projects = [
           },
         ],
         screens: [
-          {
-            name: "Product Listing",
-            desc: "Grid of cards with image, name, price, and quick-add-to-cart. Filters and category tabs at the top.",
-          },
-          {
-            name: "Product Detail",
-            desc: "Full image, description, size/variant selector, add to cart/wishlist CTAs, and related products below.",
-          },
-          {
-            name: "Cart Page",
-            desc: "Line items with quantity stepper, remove option, subtotal calculation, and a prominent checkout button.",
-          },
-          {
-            name: "Checkout / Order Form",
-            desc: "Delivery address form, order summary panel, and payment section in a clean 2-column layout.",
-          },
-          {
-            name: "User Dashboard",
-            desc: "Welcome banner, recent orders list, quick links to Profile, Wishlist, and My Orders.",
-          },
-          {
-            name: "Admin Dashboard",
-            desc: "Data tables for products, users, and orders with CRUD actions. Stats overview at the top.",
-          },
-          {
-            name: "Courier Dashboard",
-            desc: "Assigned deliveries list with status update controls and order detail drawers.",
-          },
-          {
-            name: "Auth Screens",
-            desc: "Minimal centered card layout for Login, Signup, OTP verify, and Forgot/Reset password flows.",
-          },
+          { name: "Product Listing",     desc: "Grid of cards with image, name, price, and quick-add-to-cart. Filters and category tabs at the top." },
+          { name: "Product Detail",      desc: "Full image, description, size/variant selector, add to cart/wishlist CTAs, and related products below." },
+          { name: "Cart Page",           desc: "Line items with quantity stepper, remove option, subtotal calculation, and a prominent checkout button." },
+          { name: "Checkout / Order Form", desc: "Delivery address form, order summary panel, and payment section in a clean 2-column layout." },
+          { name: "User Dashboard",      desc: "Welcome banner, recent orders list, quick links to Profile, Wishlist, and My Orders." },
+          { name: "Admin Dashboard",     desc: "Data tables for products, users, and orders with CRUD actions. Stats overview at the top." },
+          { name: "Courier Dashboard",   desc: "Assigned deliveries list with status update controls and order detail drawers." },
+          { name: "Auth Screens",        desc: "Minimal centered card layout for Login, Signup, OTP verify, and Forgot/Reset password flows." },
         ],
       },
 
       features: [
-        { icon: "🔐", label: "Multi-Role Auth", text: "Admin login with OTP verification, Google OAuth for users, and role-based route guards." },
-        { icon: "🛒", label: "Cart & Wishlist", text: "Persistent cart and wishlist with real-time updates and a smooth checkout flow." },
-        { icon: "📦", label: "Order Management", text: "Users place and track orders; couriers get a dedicated dashboard to manage deliveries." },
-        { icon: "🛡️", label: "Admin Dashboard", text: "Full control over products, users, and orders from a protected admin panel." },
-        { icon: "🔑", label: "Password Recovery", text: "Forgot/reset password flow plus Google sign-in integration." },
-        { icon: "📱", label: "Responsive UI", text: "Clean, mobile-friendly design with a shared Navbar and Footer on public pages." },
+        { icon: "🔐", label: "Multi-Role Auth",    text: "Admin login with OTP verification, Google OAuth for users, and role-based route guards." },
+        { icon: "🛒", label: "Cart & Wishlist",    text: "Persistent cart and wishlist with real-time updates and a smooth checkout flow." },
+        { icon: "📦", label: "Order Management",   text: "Users place and track orders; couriers get a dedicated dashboard to manage deliveries." },
+        { icon: "🛡️", label: "Admin Dashboard",   text: "Full control over products, users, and orders from a protected admin panel." },
+        { icon: "🔑", label: "Password Recovery",  text: "Forgot/reset password flow plus Google sign-in integration." },
+        { icon: "📱", label: "Responsive UI",      text: "Clean, mobile-friendly design with a shared Navbar and Footer on public pages." },
       ],
       pages: [
         "Home", "About", "Services", "Contact", "Products", "Product Detail",
@@ -107,10 +84,10 @@ const projects = [
       overview:
         "A cross-platform event and task management system with a Django REST backend and a Flutter mobile frontend, featuring real-time updates via Socket.io.",
       features: [
-        { icon: "📋", label: "Kanban Board", text: "Task management across custom columns and stages." },
-        { icon: "⚡", label: "Real-Time Sync", text: "Socket.io-powered live collaboration — changes reflect instantly for all team members." },
+        { icon: "📋", label: "Kanban Board",     text: "Task management across custom columns and stages." },
+        { icon: "⚡", label: "Real-Time Sync",   text: "Socket.io-powered live collaboration — changes reflect instantly for all team members." },
         { icon: "📅", label: "Event Scheduling", text: "Create, assign, and track events with deadlines and priority levels." },
-        { icon: "👥", label: "Team Roles", text: "Role-based permissions for managers and team members." },
+        { icon: "👥", label: "Team Roles",       text: "Role-based permissions for managers and team members." },
       ],
       pages: ["Dashboard", "Board View", "Calendar", "Team", "Settings"],
     },
@@ -124,17 +101,19 @@ const projects = [
       overview:
         "A no-code portfolio builder where users customize sections to produce a published portfolio site — backed by Firebase for auth and real-time storage.",
       features: [
-        { icon: "🖱️", label: "Visual Editor", text: "Intuitive block-based editor to arrange sections without writing code." },
+        { icon: "🖱️", label: "Visual Editor",   text: "Intuitive block-based editor to arrange sections without writing code." },
         { icon: "☁️", label: "Firebase Backend", text: "Real-time database and authentication so portfolios sync instantly across devices." },
-        { icon: "🎨", label: "Theme System", text: "Multiple color themes and font pairings to match personal brand." },
-        { icon: "🔗", label: "Instant Publish", text: "One-click publish to a shareable public URL." },
+        { icon: "🎨", label: "Theme System",     text: "Multiple color themes and font pairings to match personal brand." },
+        { icon: "🔗", label: "Instant Publish",  text: "One-click publish to a shareable public URL." },
       ],
       pages: ["Editor", "Preview", "Themes", "Published View", "Account"],
     },
   },
 ];
 
+// ── Modal ────────────────────────────────────────────────────
 function Modal({ project, onClose }) {
+  const c = useColors();
   const d = project.details;
   const [activeTab, setActiveTab] = useState("uiux");
 
@@ -146,16 +125,27 @@ function Modal({ project, onClose }) {
     fontSize: "13px",
     fontWeight: 500,
     transition: "all 0.2s",
-    background: activeTab === tab ? "rgba(99,102,241,0.2)" : "transparent",
-    color: activeTab === tab ? "#a78bfa" : "#64748b",
+    background: activeTab === tab ? c.badgeBg : "transparent",
+    color: activeTab === tab ? c.accentSoft : c.textSubtle,
   });
+
+  const sectionHeading = {
+    fontSize: "12px", fontWeight: 600, color: c.accent,
+    textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
+  };
+
+  const cardStyle = {
+    background: c.cardBg,
+    border: `1px solid ${c.border}`,
+    borderRadius: "12px", padding: "0.9rem",
+  };
 
   return (
     <div
       onClick={onClose}
       style={{
         position: "fixed", inset: 0, zIndex: 1000,
-        background: "rgba(0,0,0,0.75)",
+        background: "rgba(0,0,0,0.65)",
         backdropFilter: "blur(6px)",
         display: "flex", alignItems: "center", justifyContent: "center",
         padding: "1.5rem",
@@ -165,8 +155,8 @@ function Modal({ project, onClose }) {
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          background: "#0f0f1a",
-          border: "1px solid rgba(99,102,241,0.25)",
+          background: c.pageBg,
+          border: `1px solid ${c.borderAccent}`,
           borderRadius: "20px",
           padding: "2rem",
           maxWidth: "680px",
@@ -175,6 +165,7 @@ function Modal({ project, onClose }) {
           overflowY: "auto",
           position: "relative",
           animation: "slideUp 0.3s cubic-bezier(0.16,1,0.3,1) both",
+          transition: "background 0.35s ease",
         }}
       >
         {/* Close button */}
@@ -182,10 +173,11 @@ function Modal({ project, onClose }) {
           onClick={onClose}
           style={{
             position: "absolute", top: "1rem", right: "1rem",
-            background: "rgba(255,255,255,0.06)", border: "none",
-            borderRadius: "8px", color: "#94a3b8",
+            background: c.cardBg, border: `1px solid ${c.border}`,
+            borderRadius: "8px", color: c.textMuted,
             width: "32px", height: "32px", cursor: "pointer",
             fontSize: "16px", display: "flex", alignItems: "center", justifyContent: "center",
+            transition: "all 0.2s",
           }}
         >✕</button>
 
@@ -198,13 +190,13 @@ function Modal({ project, onClose }) {
             fontSize: "22px", flexShrink: 0,
           }}>{project.icon}</div>
           <div>
-            <h2 style={{ fontSize: "1.3rem", fontWeight: 700, margin: 0, color: "#e2e8f0" }}>{project.title}</h2>
+            <h2 style={{ fontSize: "1.3rem", fontWeight: 700, margin: 0, color: c.text }}>{project.title}</h2>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "6px" }}>
               {project.tech.map(t => (
                 <span key={t} style={{
-                  background: "rgba(99,102,241,0.12)", color: "#a78bfa",
+                  background: c.badgeBg, color: c.accentSoft,
                   fontSize: "12px", padding: "2px 10px", borderRadius: "999px",
-                  border: "1px solid rgba(99,102,241,0.2)",
+                  border: `1px solid ${c.badgeBorder}`,
                 }}>{t}</span>
               ))}
             </div>
@@ -212,78 +204,62 @@ function Modal({ project, onClose }) {
         </div>
 
         {/* Overview */}
-        <p style={{ color: "#cbd5e1", lineHeight: 1.8, fontSize: "14px", marginBottom: "1.5rem" }}>
+        <p style={{ color: c.textMuted, lineHeight: 1.8, fontSize: "14px", marginBottom: "1.5rem" }}>
           {d.overview}
         </p>
 
-        {/* Tabs — only for MyShop which has uiux */}
+        {/* ── Tabs (MyShop only) ── */}
         {d.uiux && (
           <>
             <div style={{
               display: "flex", gap: "4px", marginBottom: "1.5rem",
-              background: "rgba(255,255,255,0.03)",
+              background: c.cardBg,
               borderRadius: "999px", padding: "4px",
-              border: "1px solid rgba(255,255,255,0.07)",
+              border: `1px solid ${c.border}`,
               width: "fit-content",
             }}>
-              <button style={tabStyle("uiux")} onClick={() => setActiveTab("uiux")}>UI / UX</button>
+              <button style={tabStyle("uiux")}     onClick={() => setActiveTab("uiux")}>UI / UX</button>
               <button style={tabStyle("features")} onClick={() => setActiveTab("features")}>Features</button>
-              <button style={tabStyle("pages")} onClick={() => setActiveTab("pages")}>Pages</button>
+              <button style={tabStyle("pages")}    onClick={() => setActiveTab("pages")}>Pages</button>
             </div>
 
-            {/* ── UI/UX TAB ── */}
+            {/* UI/UX tab */}
             {activeTab === "uiux" && (
               <div style={{ animation: "fadeIn 0.2s ease both" }}>
-                <p style={{ color: "#94a3b8", fontSize: "14px", lineHeight: 1.8, marginBottom: "1.5rem" }}>
+                <p style={{ color: c.textMuted, fontSize: "14px", lineHeight: 1.8, marginBottom: "1.5rem" }}>
                   {d.uiux.description}
                 </p>
 
-                {/* Design principles */}
-                <h3 style={{
-                  fontSize: "12px", fontWeight: 600, color: "#6366f1",
-                  textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
-                }}>
-                  Design Principles
-                </h3>
+                <h3 style={sectionHeading}>Design Principles</h3>
                 <div style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
                   gap: "0.75rem", marginBottom: "1.8rem",
                 }}>
                   {d.uiux.principles.map(p => (
-                    <div key={p.label} style={{
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.07)",
-                      borderRadius: "12px", padding: "1rem",
-                    }}>
+                    <div key={p.label} style={cardStyle}>
                       <div style={{ fontSize: "18px", marginBottom: "6px" }}>{p.icon}</div>
-                      <div style={{ fontSize: "13px", fontWeight: 600, color: "#e2e8f0", marginBottom: "4px" }}>{p.label}</div>
-                      <div style={{ fontSize: "12px", color: "#64748b", lineHeight: 1.6 }}>{p.text}</div>
+                      <div style={{ fontSize: "13px", fontWeight: 600, color: c.text, marginBottom: "4px" }}>{p.label}</div>
+                      <div style={{ fontSize: "12px", color: c.textSubtle, lineHeight: 1.6 }}>{p.text}</div>
                     </div>
                   ))}
                 </div>
 
-                {/* Screen-by-screen walkthrough */}
-                <h3 style={{
-                  fontSize: "12px", fontWeight: 600, color: "#6366f1",
-                  textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
-                }}>
-                  Screen Walkthrough
-                </h3>
+                <h3 style={sectionHeading}>Screen Walkthrough</h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                   {d.uiux.screens.map((s, i) => (
                     <div key={s.name} style={{
                       display: "flex", gap: "1rem", alignItems: "flex-start",
                       padding: "0.75rem 1rem",
-                      background: "rgba(255,255,255,0.02)",
-                      border: "1px solid rgba(255,255,255,0.05)",
+                      background: c.cardBg,
+                      border: `1px solid ${c.border}`,
                       borderRadius: "10px",
                     }}>
                       <div style={{
                         minWidth: "22px", height: "22px",
                         borderRadius: "6px",
-                        background: "rgba(99,102,241,0.15)",
-                        color: "#a78bfa",
+                        background: c.badgeBg,
+                        color: c.accentSoft,
                         fontSize: "11px", fontWeight: 700,
                         display: "flex", alignItems: "center", justifyContent: "center",
                         flexShrink: 0,
@@ -291,10 +267,10 @@ function Modal({ project, onClose }) {
                         {i + 1}
                       </div>
                       <div>
-                        <div style={{ fontSize: "13px", fontWeight: 600, color: "#e2e8f0", marginBottom: "3px" }}>
+                        <div style={{ fontSize: "13px", fontWeight: 600, color: c.text, marginBottom: "3px" }}>
                           {s.name}
                         </div>
-                        <div style={{ fontSize: "12px", color: "#64748b", lineHeight: 1.6 }}>
+                        <div style={{ fontSize: "12px", color: c.textSubtle, lineHeight: 1.6 }}>
                           {s.desc}
                         </div>
                       </div>
@@ -304,50 +280,36 @@ function Modal({ project, onClose }) {
               </div>
             )}
 
-            {/* ── FEATURES TAB ── */}
+            {/* Features tab */}
             {activeTab === "features" && (
               <div style={{ animation: "fadeIn 0.2s ease both" }}>
-                <h3 style={{
-                  fontSize: "12px", fontWeight: 600, color: "#6366f1",
-                  textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
-                }}>
-                  Key Features
-                </h3>
+                <h3 style={sectionHeading}>Key Features</h3>
                 <div style={{
                   display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
                   gap: "0.75rem",
                 }}>
                   {d.features.map(f => (
-                    <div key={f.label} style={{
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.07)",
-                      borderRadius: "12px", padding: "0.9rem",
-                    }}>
+                    <div key={f.label} style={cardStyle}>
                       <div style={{ fontSize: "18px", marginBottom: "6px" }}>{f.icon}</div>
-                      <div style={{ fontSize: "13px", fontWeight: 600, color: "#e2e8f0", marginBottom: "4px" }}>{f.label}</div>
-                      <div style={{ fontSize: "12px", color: "#64748b", lineHeight: 1.6 }}>{f.text}</div>
+                      <div style={{ fontSize: "13px", fontWeight: 600, color: c.text, marginBottom: "4px" }}>{f.label}</div>
+                      <div style={{ fontSize: "12px", color: c.textSubtle, lineHeight: 1.6 }}>{f.text}</div>
                     </div>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* ── PAGES TAB ── */}
+            {/* Pages tab */}
             {activeTab === "pages" && (
               <div style={{ animation: "fadeIn 0.2s ease both" }}>
-                <h3 style={{
-                  fontSize: "12px", fontWeight: 600, color: "#6366f1",
-                  textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
-                }}>
-                  Pages & Screens
-                </h3>
+                <h3 style={sectionHeading}>Pages & Screens</h3>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                   {d.pages.map(pg => (
                     <span key={pg} style={{
-                      background: "rgba(255,255,255,0.05)",
-                      border: "1px solid rgba(255,255,255,0.1)",
+                      background: c.cardBg,
+                      border: `1px solid ${c.border}`,
                       borderRadius: "999px", padding: "5px 13px",
-                      fontSize: "12px", color: "#94a3b8",
+                      fontSize: "12px", color: c.textMuted,
                     }}>{pg}</span>
                   ))}
                 </div>
@@ -356,45 +318,31 @@ function Modal({ project, onClose }) {
           </>
         )}
 
-        {/* Fallback for projects without uiux (Event Management, Portfolio Builder) */}
+        {/* Fallback (Event Management, Portfolio Builder) */}
         {!d.uiux && (
           <>
-            <h3 style={{
-              fontSize: "12px", fontWeight: 600, color: "#6366f1",
-              textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
-            }}>
-              Key Features
-            </h3>
+            <h3 style={sectionHeading}>Key Features</h3>
             <div style={{
               display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
               gap: "0.75rem", marginBottom: "1.5rem",
             }}>
               {d.features.map(f => (
-                <div key={f.label} style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: "12px", padding: "0.9rem",
-                }}>
+                <div key={f.label} style={cardStyle}>
                   <div style={{ fontSize: "18px", marginBottom: "6px" }}>{f.icon}</div>
-                  <div style={{ fontSize: "13px", fontWeight: 600, color: "#e2e8f0", marginBottom: "4px" }}>{f.label}</div>
-                  <div style={{ fontSize: "12px", color: "#64748b", lineHeight: 1.6 }}>{f.text}</div>
+                  <div style={{ fontSize: "13px", fontWeight: 600, color: c.text, marginBottom: "4px" }}>{f.label}</div>
+                  <div style={{ fontSize: "12px", color: c.textSubtle, lineHeight: 1.6 }}>{f.text}</div>
                 </div>
               ))}
             </div>
 
-            <h3 style={{
-              fontSize: "12px", fontWeight: 600, color: "#6366f1",
-              textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.8rem",
-            }}>
-              Pages & Screens
-            </h3>
+            <h3 style={sectionHeading}>Pages & Screens</h3>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
               {d.pages.map(pg => (
                 <span key={pg} style={{
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  background: c.cardBg,
+                  border: `1px solid ${c.border}`,
                   borderRadius: "999px", padding: "5px 13px",
-                  fontSize: "12px", color: "#94a3b8",
+                  fontSize: "12px", color: c.textMuted,
                 }}>{pg}</span>
               ))}
             </div>
@@ -405,18 +353,27 @@ function Modal({ project, onClose }) {
   );
 }
 
+// ── Projects page ────────────────────────────────────────────
 export default function Projects() {
+  const c = useColors();
   const [hoveredProject, setHoveredProject] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
 
   return (
     <>
       <div style={{ animation: "fadeUp 0.5s ease both" }}>
-        <h2 style={{ fontSize: "1.8rem", fontWeight: 700, marginBottom: "0.5rem" }}>Projects</h2>
-        <p style={{ color: "#64748b", marginBottom: "2.5rem", fontSize: "15px" }}>
+        <h2 style={{ fontSize: "1.8rem", fontWeight: 700, marginBottom: "0.5rem", color: c.text }}>
+          Projects
+        </h2>
+        <p style={{ color: c.textSubtle, marginBottom: "2.5rem", fontSize: "15px" }}>
           A selection of my recent work — click any card to learn more
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.2rem" }}>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: "1.2rem",
+        }}>
           {projects.map((p, i) => (
             <div
               key={i}
@@ -424,8 +381,8 @@ export default function Projects() {
               onMouseEnter={() => setHoveredProject(i)}
               onMouseLeave={() => setHoveredProject(null)}
               style={{
-                background: hoveredProject === i ? "rgba(99,102,241,0.08)" : "rgba(255,255,255,0.03)",
-                border: `1px solid ${hoveredProject === i ? "rgba(99,102,241,0.35)" : "rgba(255,255,255,0.07)"}`,
+                background: hoveredProject === i ? c.cardBgHover : c.cardBg,
+                border: `1px solid ${hoveredProject === i ? c.borderAccent : c.border}`,
                 borderRadius: "16px", padding: "1.5rem",
                 cursor: "pointer", transition: "all 0.25s",
                 transform: hoveredProject === i ? "translateY(-3px)" : "none",
@@ -440,20 +397,27 @@ export default function Projects() {
               }}>
                 {p.icon}
               </div>
-              <h3 style={{ fontSize: "16px", fontWeight: 600, marginBottom: "8px" }}>{p.title}</h3>
-              <p style={{ fontSize: "14px", color: "#94a3b8", lineHeight: 1.6, marginBottom: "1rem" }}>{p.desc}</p>
+
+              <h3 style={{ fontSize: "16px", fontWeight: 600, marginBottom: "8px", color: c.text }}>
+                {p.title}
+              </h3>
+              <p style={{ fontSize: "14px", color: c.textMuted, lineHeight: 1.6, marginBottom: "1rem" }}>
+                {p.desc}
+              </p>
+
               <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "1rem" }}>
                 {p.tech.map(t => (
                   <span key={t} style={{
-                    background: "rgba(99,102,241,0.12)",
-                    color: "#a78bfa", fontSize: "12px",
+                    background: c.badgeBg,
+                    color: c.accentSoft, fontSize: "12px",
                     padding: "3px 10px", borderRadius: "999px",
-                    border: "1px solid rgba(99,102,241,0.2)",
+                    border: `1px solid ${c.badgeBorder}`,
                   }}>{t}</span>
                 ))}
               </div>
+
               <div style={{
-                fontSize: "12px", color: "#6366f1", fontWeight: 500,
+                fontSize: "12px", color: c.accent, fontWeight: 500,
                 opacity: hoveredProject === i ? 1 : 0.4,
                 transition: "opacity 0.2s",
               }}>
