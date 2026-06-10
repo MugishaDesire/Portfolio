@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import Home from "./Home";
 import About from "./About";
-import Skills from "./Skills";
+import Skills from "./Skills&Services";
 import Projects from "./Projects";
 import Contact from "./Contact";
 import { ThemeProvider, useTheme, useColors } from "./ThemeContext";
 
-const navLinks = ["Home", "About", "Skills", "Projects", "Contact"];
+const navLinks = ["Home", "About", "Skills&Services", "Projects", "Contact"];
 
 // Wrap everything in the provider so all children can call useTheme()
 export default function App() {
@@ -27,7 +27,7 @@ function AppInner() {
   const sectionMap = {
     Home:     <Home onNavigate={handleNav} />,
     About:    <About />,
-    Skills:   <Skills />,
+    "Skills&Services":   <Skills />,
     Projects: <Projects />,
     Contact:  <Contact />,
   };

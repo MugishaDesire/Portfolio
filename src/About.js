@@ -89,7 +89,7 @@ export default function About() {
         transition: "background 0.35s ease, border-color 0.35s ease",
       }}>
         <p style={{ lineHeight: 1.8, color: c.textMuted, margin: 0, fontSize: "16px" }}>
-          I build fast, beautiful, and accessible web applications. With 2.5+ years of experience,
+          I build fast, beautiful, and accessible web applications. With 2+ years of experience,
           I specialize in React ecosystems and backend services. I care deeply about clean code,
           great UX, and shipping products people love.
         </p>
