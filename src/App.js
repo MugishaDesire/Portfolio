@@ -4,11 +4,11 @@ import About from "./About";
 import Skills from "./Skills&Services";
 import Projects from "./Projects";
 import Contact from "./Contact";
+import Footer from "./Footer";
 import { ThemeProvider, useTheme, useColors } from "./ThemeContext";
 
 const navLinks = ["Home", "About", "Skills&Services", "Projects", "Contact"];
 
-// Wrap everything in the provider so all children can call useTheme()
 export default function App() {
   return (
     <ThemeProvider>
@@ -60,6 +60,8 @@ function AppInner() {
       fontFamily: "'Segoe UI', system-ui, sans-serif",
       color: c.text,
       transition: "background 0.35s ease, color 0.35s ease",
+      display: "flex",
+      flexDirection: "column",
     }}>
 
       {/* Ambient glow */}
@@ -125,11 +127,14 @@ function AppInner() {
       </nav>
 
       <main style={{
-        maxWidth: "900px", margin: "0 auto",
+        maxWidth: "900px", margin: "0 auto", width: "100%",
         padding: "2rem 1.25rem", position: "relative", zIndex: 1,
+        flex: 1,
       }}>
         {sectionMap[active]}
       </main>
+
+      <Footer onNavigate={handleNav} />
 
       <style>{`
         @keyframes fadeUp {
