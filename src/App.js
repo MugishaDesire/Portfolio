@@ -207,36 +207,259 @@ function HamburgerBtn({ menuOpen, onToggle }) {
   );
 }
 
+// function ThemeToggle() {
+//   const { isDark, toggle } = useTheme();
+//   const c = useColors();
+//   const [hover, setHover] = useState(false);
+
+//   return (
+//     <button
+//       onClick={toggle}
+//       onMouseEnter={() => setHover(true)}
+//       onMouseLeave={() => setHover(false)}
+//       aria-label="Toggle theme"
+//       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+//       style={{
+//         display: "inline-flex", alignItems: "center", justifyContent: "center",
+//         width: "34px", height: "34px", borderRadius: "50%",
+//         background: hover ? c.badgeBg : c.cardBg,
+//         border: `1px solid ${c.borderAccent}`,
+//         cursor: "pointer",
+//         transition: "all 0.25s",
+//         userSelect: "none", flexShrink: 0,
+//         padding: 0,
+//       }}
+//     >
+//       <span style={{
+//         fontSize: "16px", display: "inline-block", lineHeight: 1,
+//         transition: "transform 0.4s ease",
+//         transform: hover ? "rotate(25deg)" : "rotate(0deg)",
+//       }}>
+//         {isDark ? "☀️" : "🌙"}
+//       </span>
+//     </button>
+//   );
+// }
+
+
 function ThemeToggle() {
   const { isDark, toggle } = useTheme();
-  const c = useColors();
-  const [hover, setHover] = useState(false);
 
   return (
-    <button
-      onClick={toggle}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      aria-label="Toggle theme"
-      title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      style={{
-        display: "inline-flex", alignItems: "center", justifyContent: "center",
-        width: "34px", height: "34px", borderRadius: "50%",
-        background: hover ? c.badgeBg : c.cardBg,
-        border: `1px solid ${c.borderAccent}`,
-        cursor: "pointer",
-        transition: "all 0.25s",
-        userSelect: "none", flexShrink: 0,
-        padding: 0,
-      }}
-    >
-      <span style={{
-        fontSize: "16px", display: "inline-block", lineHeight: 1,
-        transition: "transform 0.4s ease",
-        transform: hover ? "rotate(25deg)" : "rotate(0deg)",
-      }}>
-        {isDark ? "☀️" : "🌙"}
-      </span>
-    </button>
+    <div className="toggle-wrapper">
+      <input
+        className="toggle-checkbox"
+        type="checkbox"
+        checked={isDark}
+        onChange={toggle}
+        aria-label="Toggle theme"
+        title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      />
+      <div className="toggle-container">
+        <div className="toggle-track">
+          {/* Sun icon for light mode */}
+          <svg
+            className="toggle-icon sun-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </svg>
+          
+          {/* Moon icon for dark mode */}
+          <svg
+            className="toggle-icon moon-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </div>
+        <div className="toggle-thumb">
+          <div className="toggle-thumb-shine" />
+        </div>
+      </div>
+
+      <style>{`
+        .toggle-wrapper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          padding: 4px;
+          border-radius: 50px;
+          background: linear-gradient(145deg, #e0e0e0, #f5f5f5);
+          box-shadow: 
+            0 4px 15px rgba(0, 0, 0, 0.1),
+            inset 0 1px 2px rgba(255, 255, 255, 0.8);
+          transition: all 0.3s ease;
+          flex-shrink: 0;
+        }
+
+        .toggle-wrapper:hover {
+          box-shadow: 
+            0 6px 20px rgba(0, 0, 0, 0.15),
+            inset 0 1px 2px rgba(255, 255, 255, 0.8);
+          transform: scale(1.02);
+        }
+
+        .toggle-wrapper:active {
+          transform: scale(0.95);
+        }
+
+        .toggle-checkbox {
+          appearance: none;
+          position: absolute;
+          z-index: 2;
+          width: 100%;
+          height: 100%;
+          border-radius: 50px;
+          cursor: pointer;
+          opacity: 0;
+          margin: 0;
+        }
+
+        .toggle-container {
+          position: relative;
+          width: 64px;
+          height: 34px;
+          border-radius: 50px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          box-shadow: 
+            inset 0 2px 4px rgba(0, 0, 0, 0.2),
+            inset 0 -2px 4px rgba(255, 255, 255, 0.1);
+          transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          overflow: hidden;
+        }
+
+        .toggle-checkbox:checked + .toggle-container {
+          background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .toggle-track {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0 8px;
+          z-index: 0;
+        }
+
+        .toggle-icon {
+          width: 16px;
+          height: 16px;
+          color: rgba(255, 255, 255, 0.7);
+          transition: all 0.3s ease;
+        }
+
+        .toggle-thumb {
+          position: absolute;
+          top: 3px;
+          left: 3px;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+          box-shadow: 
+            0 2px 8px rgba(0, 0, 0, 0.2),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.05),
+            inset 0 2px 4px rgba(255, 255, 255, 0.8);
+          transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          z-index: 1;
+        }
+
+        .toggle-checkbox:checked + .toggle-container .toggle-thumb {
+          left: calc(100% - 31px);
+          background: linear-gradient(135deg, #2d3436 0%, #000000 100%);
+          box-shadow: 
+            0 2px 8px rgba(0, 0, 0, 0.4),
+            inset 0 -2px 4px rgba(255, 255, 255, 0.1),
+            inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .toggle-thumb-shine {
+          position: absolute;
+          top: 4px;
+          left: 6px;
+          width: 8px;
+          height: 6px;
+          border-radius: 50%;
+          background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, transparent 100%);
+          opacity: 0.6;
+          transition: all 0.3s ease;
+        }
+
+        .toggle-checkbox:checked + .toggle-container .toggle-thumb-shine {
+          opacity: 0.2;
+          left: 4px;
+          top: 6px;
+          width: 6px;
+          height: 4px;
+        }
+
+        /* Optional: Add ripple effect on click */
+        .toggle-wrapper::after {
+          content: '';
+          position: absolute;
+          inset: -2px;
+          border-radius: 50px;
+          background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c);
+          background-size: 300% 300%;
+          opacity: 0;
+          z-index: -1;
+          animation: gradientShift 3s ease infinite;
+          transition: opacity 0.3s ease;
+        }
+
+        .toggle-wrapper:hover::after {
+          opacity: 0.3;
+        }
+
+        @keyframes gradientShift {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+          .toggle-container {
+            width: 56px;
+            height: 30px;
+          }
+          .toggle-thumb {
+            width: 24px;
+            height: 24px;
+            top: 3px;
+            left: 3px;
+          }
+          .toggle-checkbox:checked + .toggle-container .toggle-thumb {
+            left: calc(100% - 27px);
+          }
+          .toggle-icon {
+            width: 14px;
+            height: 14px;
+          }
+          .toggle-track {
+            padding: 0 6px;
+          }
+        }
+      `}</style>
+    </div>
   );
 }
