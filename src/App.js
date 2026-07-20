@@ -241,223 +241,95 @@ function HamburgerBtn({ menuOpen, onToggle }) {
 //   );
 // }
 
+// Previous "capsule" toggle (sun/moon SVG icons) — replaced below with the
+// Uiverse.io "Madflows" crescent-moon toggle, scaled down to fit the nav bar.
+// function ThemeToggle() {
+//   const { isDark, toggle } = useTheme();
+//   return (
+//     <div className="toggle-wrapper">
+//       <input
+//         className="toggle-checkbox"
+//         type="checkbox"
+//         checked={isDark}
+//         onChange={toggle}
+//         aria-label="Toggle theme"
+//         title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+//       />
+//       ...
+//     </div>
+//   );
+// }
 
+// From Uiverse.io by Madflows — adapted to React (controlled checkbox) and
+// scaled down (56x30 instead of 100x50) to fit the nav bar, classes prefixed
+// with "mdf-" to avoid clashing with other checkboxes/sliders in the app.
 function ThemeToggle() {
   const { isDark, toggle } = useTheme();
 
   return (
-    <div className="toggle-wrapper">
-      <input
-        className="toggle-checkbox"
-        type="checkbox"
-        checked={isDark}
-        onChange={toggle}
-        aria-label="Toggle theme"
-        title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      />
-      <div className="toggle-container">
-        <div className="toggle-track">
-          {/* Sun icon for light mode */}
-          <svg
-            className="toggle-icon sun-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <circle cx="12" cy="12" r="5" />
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-          </svg>
-          
-          {/* Moon icon for dark mode */}
-          <svg
-            className="toggle-icon moon-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
-        </div>
-        <div className="toggle-thumb">
-          <div className="toggle-thumb-shine" />
-        </div>
-      </div>
+    <div className="mdf-toggle-switch">
+      <label className="mdf-switch-label">
+        <input
+          type="checkbox"
+          className="mdf-checkbox"
+          checked={isDark}
+          onChange={toggle}
+          aria-label="Toggle theme"
+          title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+        />
+        <span className="mdf-slider" />
+      </label>
 
       <style>{`
-        .toggle-wrapper {
-          display: flex;
-          justify-content: center;
-          align-items: center;
+        .mdf-toggle-switch {
           position: relative;
-          padding: 4px;
-          border-radius: 50px;
-          background: linear-gradient(145deg, #e0e0e0, #f5f5f5);
-          box-shadow: 
-            0 4px 15px rgba(0, 0, 0, 0.1),
-            inset 0 1px 2px rgba(255, 255, 255, 0.8);
-          transition: all 0.3s ease;
+          width: 56px;
+          height: 30px;
+          --mdf-light: #d8dbe0;
+          --mdf-dark: #28292c;
           flex-shrink: 0;
         }
-
-        .toggle-wrapper:hover {
-          box-shadow: 
-            0 6px 20px rgba(0, 0, 0, 0.15),
-            inset 0 1px 2px rgba(255, 255, 255, 0.8);
-          transform: scale(1.02);
-        }
-
-        .toggle-wrapper:active {
-          transform: scale(0.95);
-        }
-
-        .toggle-checkbox {
-          appearance: none;
+        .mdf-switch-label {
           position: absolute;
-          z-index: 2;
+          width: 100%;
+          height: 30px;
+          background-color: var(--mdf-dark);
+          border-radius: 25px;
+          cursor: pointer;
+          border: 2px solid var(--mdf-dark);
+          display: block;
+        }
+        .mdf-checkbox {
+          position: absolute;
+          display: none;
+        }
+        .mdf-slider {
+          position: absolute;
+          top: 0; left: 0;
           width: 100%;
           height: 100%;
-          border-radius: 50px;
-          cursor: pointer;
-          opacity: 0;
-          margin: 0;
+          border-radius: 25px;
+          transition: 0.3s;
         }
-
-        .toggle-container {
-          position: relative;
-          width: 64px;
-          height: 34px;
-          border-radius: 50px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          box-shadow: 
-            inset 0 2px 4px rgba(0, 0, 0, 0.2),
-            inset 0 -2px 4px rgba(255, 255, 255, 0.1);
-          transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-          overflow: hidden;
+        .mdf-checkbox:checked ~ .mdf-slider {
+          background-color: var(--mdf-light);
         }
-
-        .toggle-checkbox:checked + .toggle-container {
-          background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-
-        .toggle-track {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0 8px;
-          z-index: 0;
-        }
-
-        .toggle-icon {
-          width: 16px;
-          height: 16px;
-          color: rgba(255, 255, 255, 0.7);
-          transition: all 0.3s ease;
-        }
-
-        .toggle-thumb {
-          position: absolute;
-          top: 3px;
-          left: 3px;
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-          box-shadow: 
-            0 2px 8px rgba(0, 0, 0, 0.2),
-            inset 0 -2px 4px rgba(0, 0, 0, 0.05),
-            inset 0 2px 4px rgba(255, 255, 255, 0.8);
-          transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-          z-index: 1;
-        }
-
-        .toggle-checkbox:checked + .toggle-container .toggle-thumb {
-          left: calc(100% - 31px);
-          background: linear-gradient(135deg, #2d3436 0%, #000000 100%);
-          box-shadow: 
-            0 2px 8px rgba(0, 0, 0, 0.4),
-            inset 0 -2px 4px rgba(255, 255, 255, 0.1),
-            inset 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .toggle-thumb-shine {
+        .mdf-slider::before {
+          content: "";
           position: absolute;
           top: 4px;
-          left: 6px;
-          width: 8px;
-          height: 6px;
-          border-radius: 50%;
-          background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, transparent 100%);
-          opacity: 0.6;
-          transition: all 0.3s ease;
-        }
-
-        .toggle-checkbox:checked + .toggle-container .toggle-thumb-shine {
-          opacity: 0.2;
           left: 4px;
-          top: 6px;
-          width: 6px;
-          height: 4px;
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          box-shadow: inset 8px -3px 0px 0px var(--mdf-light);
+          background-color: var(--mdf-dark);
+          transition: 0.3s;
         }
-
-        /* Optional: Add ripple effect on click */
-        .toggle-wrapper::after {
-          content: '';
-          position: absolute;
-          inset: -2px;
-          border-radius: 50px;
-          background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c);
-          background-size: 300% 300%;
-          opacity: 0;
-          z-index: -1;
-          animation: gradientShift 3s ease infinite;
-          transition: opacity 0.3s ease;
-        }
-
-        .toggle-wrapper:hover::after {
-          opacity: 0.3;
-        }
-
-        @keyframes gradientShift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 640px) {
-          .toggle-container {
-            width: 56px;
-            height: 30px;
-          }
-          .toggle-thumb {
-            width: 24px;
-            height: 24px;
-            top: 3px;
-            left: 3px;
-          }
-          .toggle-checkbox:checked + .toggle-container .toggle-thumb {
-            left: calc(100% - 27px);
-          }
-          .toggle-icon {
-            width: 14px;
-            height: 14px;
-          }
-          .toggle-track {
-            padding: 0 6px;
-          }
+        .mdf-checkbox:checked ~ .mdf-slider::before {
+          transform: translateX(26px);
+          background-color: var(--mdf-dark);
+          box-shadow: none;
         }
       `}</style>
     </div>
