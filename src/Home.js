@@ -49,6 +49,11 @@ export default function Home({ onNavigate }) {
   const [workHover, setWorkHover] = useState(false);
   const canvasRef = useRef(null);
 
+  // Accent used by the canvas particle field — a touch darker/denser in
+  // light mode so the dots and connecting lines stay visible against a
+  // pale background, and brighter/glowier in dark mode.
+  const dotRGB = isDark ? "129,140,248" : "79,70,229";
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -77,7 +82,7 @@ export default function Home({ onNavigate }) {
         if (d.y < 0 || d.y > canvas.height) d.vy *= -1;
         ctx.beginPath();
         ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(99,102,241,${c.dotOpacity})`;
+        ctx.fillStyle = `rgba(${dotRGB},${c.dotOpacity})`;
         ctx.fill();
       });
       dots.forEach((a, i) => dots.slice(i + 1).forEach(b => {
@@ -86,7 +91,7 @@ export default function Home({ onNavigate }) {
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = `rgba(99,102,241,${c.lineOpacity * (1 - dist / 120)})`;
+          ctx.strokeStyle = `rgba(${dotRGB},${c.lineOpacity * (1 - dist / 120)})`;
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }
@@ -95,13 +100,14 @@ export default function Home({ onNavigate }) {
     };
     draw();
     return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
-  }, [isDark, c.dotOpacity, c.lineOpacity]);
+  }, [isDark, c.dotOpacity, c.lineOpacity, dotRGB]);
 
   return (
     <div style={{
       minHeight: "100vh",
       background: c.heroBg,
       color: c.text,
+      colorScheme: isDark ? "dark" : "light",
       fontFamily: "'Segoe UI', system-ui, sans-serif",
       overflowX: "hidden",
       transition: "background 0.35s ease, color 0.35s ease",
@@ -112,18 +118,25 @@ export default function Home({ onNavigate }) {
           position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none",
         }} />
 
-        {/* Glow orbs */}
+        {/* Glow orbs — softer & lower-opacity in light mode so they read as
+            a subtle tint instead of a washed-out haze */}
         <div style={{
           position: "absolute", top: "-10%", left: "20%",
           width: "500px", height: "500px", borderRadius: "50%",
           background: `radial-gradient(circle, ${c.orb1} 0%, transparent 70%)`,
-          filter: "blur(40px)", pointerEvents: "none", transition: "background 0.35s ease",
+          filter: isDark ? "blur(40px)" : "blur(60px)",
+          opacity: isDark ? 1 : 0.7,
+          pointerEvents: "none",
+          transition: "background 0.35s ease, opacity 0.35s ease",
         }} />
         <div style={{
           position: "absolute", bottom: "5%", right: "10%",
           width: "350px", height: "350px", borderRadius: "50%",
           background: `radial-gradient(circle, ${c.orb2} 0%, transparent 70%)`,
-          filter: "blur(40px)", pointerEvents: "none", transition: "background 0.35s ease",
+          filter: isDark ? "blur(40px)" : "blur(60px)",
+          opacity: isDark ? 1 : 0.7,
+          pointerEvents: "none",
+          transition: "background 0.35s ease, opacity 0.35s ease",
         }} />
 
         {/* Grid */}
@@ -131,6 +144,7 @@ export default function Home({ onNavigate }) {
           position: "absolute", inset: 0, pointerEvents: "none",
           backgroundImage: `linear-gradient(${c.gridLine} 1px, transparent 1px), linear-gradient(90deg, ${c.gridLine} 1px, transparent 1px)`,
           backgroundSize: "60px 60px",
+          transition: "background-image 0.35s ease",
         }} />
 
         {/* Content */}
@@ -147,12 +161,14 @@ export default function Home({ onNavigate }) {
             borderRadius: "999px", padding: "6px 16px",
             fontSize: "13px", color: c.badgeColor,
             marginBottom: "2rem",
+            boxShadow: isDark ? "none" : "0 1px 3px rgba(15,23,42,0.06)",
             animation: "fadeDown 0.6s ease both",
-            transition: "background 0.35s ease, border-color 0.35s ease, color 0.35s ease",
+            transition: "background 0.35s ease, border-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease",
           }}>
             <span style={{
               width: "7px", height: "7px", borderRadius: "50%",
-              background: "#22c55e", boxShadow: "0 0 6px #22c55e",
+              background: "#22c55e",
+              boxShadow: isDark ? "0 0 6px #22c55e" : "0 0 4px rgba(34,197,94,0.6)",
               display: "inline-block", animation: "pulse 2s infinite",
             }} />
             Available for work — Remote &amp; Kigali
@@ -174,9 +190,11 @@ export default function Home({ onNavigate }) {
             margin: "0 0 0.2rem", lineHeight: 1.05, letterSpacing: "-0.02em",
             animation: "fadeUp 0.6s ease 0.2s both",
           }}>
-            <span style={{
+            <span key={isDark ? "name-dark" : "name-light"} style={{
               background: c.nameGradient,
+              backgroundClip: "text",
               WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+              display: "inline-block",
             }}>
               MUGISHA Desire
             </span>
@@ -242,7 +260,12 @@ export default function Home({ onNavigate }) {
                   : "linear-gradient(135deg, #6366f1, #a78bfa)",
                 color: "#fff", fontWeight: 600, fontSize: "15px",
                 textDecoration: "none",
-                boxShadow: cvHover ? "0 8px 30px rgba(99,102,241,0.45)" : "0 4px 20px rgba(99,102,241,0.25)",
+                // Light mode needs a darker, tighter shadow to separate the
+                // button from a bright page background; dark mode keeps the
+                // soft colored glow.
+                boxShadow: isDark
+                  ? (cvHover ? "0 8px 30px rgba(99,102,241,0.45)" : "0 4px 20px rgba(99,102,241,0.25)")
+                  : (cvHover ? "0 10px 24px rgba(79,70,229,0.35)" : "0 6px 16px rgba(79,70,229,0.22)"),
                 transition: "all 0.25s",
                 transform: cvHover ? "translateY(-2px)" : "none",
               }}
