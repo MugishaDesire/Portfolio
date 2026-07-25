@@ -45,13 +45,18 @@ export default function Home({ onNavigate }) {
     "Open to Remote Work",
   ]);
 
-  const [cvHover, setCvHover]     = useState(false);
   const [workHover, setWorkHover] = useState(false);
+
+  // "preview"  -> clicking opens the CV in a new tab, then morphs into "download".
+  // "download" -> clicking downloads the CV, then morphs back to "preview".
+  // Starts on "preview" so the first click always opens the CV for review
+  // before a download is triggered. This repeats indefinitely so both
+  // actions stay available at all times.
+  const [cvMode, setCvMode] = useState("preview");
+  const [cvMorphing, setCvMorphing] = useState(false);
+  const cvAnchorRef = useRef(null);
   const canvasRef = useRef(null);
 
-  // Accent used by the canvas particle field — a touch darker/denser in
-  // light mode so the dots and connecting lines stay visible against a
-  // pale background, and brighter/glowier in dark mode.
   const dotRGB = isDark ? "129,140,248" : "79,70,229";
 
   useEffect(() => {
@@ -102,6 +107,23 @@ export default function Home({ onNavigate }) {
     return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
   }, [isDark, c.dotOpacity, c.lineOpacity, dotRGB]);
 
+  function handleCvClick(e) {
+    e.preventDefault();
+    if (cvMorphing) return; // ignore rapid double-clicks mid-animation
+
+    if (cvMode === "download") {
+      cvAnchorRef.current?.click();
+    } else {
+      window.open(cv, "_blank", "noopener,noreferrer");
+    }
+
+    setCvMorphing(true);
+    setTimeout(() => {
+      setCvMode(m => (m === "download" ? "preview" : "download"));
+      setCvMorphing(false);
+    }, 550);
+  }
+
   return (
     <div style={{
       minHeight: "100vh",
@@ -118,8 +140,6 @@ export default function Home({ onNavigate }) {
           position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none",
         }} />
 
-        {/* Glow orbs — softer & lower-opacity in light mode so they read as
-            a subtle tint instead of a washed-out haze */}
         <div style={{
           position: "absolute", top: "-10%", left: "20%",
           width: "500px", height: "500px", borderRadius: "50%",
@@ -139,7 +159,6 @@ export default function Home({ onNavigate }) {
           transition: "background 0.35s ease, opacity 0.35s ease",
         }} />
 
-        {/* Grid */}
         <div style={{
           position: "absolute", inset: 0, pointerEvents: "none",
           backgroundImage: `linear-gradient(${c.gridLine} 1px, transparent 1px), linear-gradient(90deg, ${c.gridLine} 1px, transparent 1px)`,
@@ -147,14 +166,12 @@ export default function Home({ onNavigate }) {
           transition: "background-image 0.35s ease",
         }} />
 
-        {/* Content */}
         <div style={{
           position: "relative", zIndex: 1,
           maxWidth: "900px", margin: "0 auto",
           padding: "80px 2rem 0",
         }}>
 
-          {/* Status badge */}
           <div style={{
             display: "inline-flex", alignItems: "center", gap: "8px",
             background: c.badgeBg, border: `1px solid ${c.badgeBorder}`,
@@ -174,7 +191,6 @@ export default function Home({ onNavigate }) {
             Available for work — Remote &amp; Kigali
           </div>
 
-          {/* Greeting */}
           <p style={{
             fontSize: "18px", color: c.textSubtle, fontWeight: 400,
             marginBottom: "0.4rem", letterSpacing: "0.04em",
@@ -184,7 +200,6 @@ export default function Home({ onNavigate }) {
             Hi, I'm
           </p>
 
-          {/* Name */}
           <h1 style={{
             fontSize: "clamp(2.8rem, 6vw, 4.8rem)", fontWeight: 800,
             margin: "0 0 0.2rem", lineHeight: 1.05, letterSpacing: "-0.02em",
@@ -200,7 +215,6 @@ export default function Home({ onNavigate }) {
             </span>
           </h1>
 
-          {/* Typewriter */}
           <div style={{
             fontSize: "clamp(1.1rem, 2.5vw, 1.5rem)",
             color: c.accent, fontWeight: 600,
@@ -218,7 +232,6 @@ export default function Home({ onNavigate }) {
             }} />
           </div>
 
-          {/* Location */}
           <p style={{
             fontSize: "15px", color: c.textSubtle, marginBottom: "1.6rem",
             animation: "fadeUp 0.6s ease 0.35s both", transition: "color 0.35s ease",
@@ -228,7 +241,6 @@ export default function Home({ onNavigate }) {
             <span style={{ color: c.textMuted }}>Remote</span>.
           </p>
 
-          {/* Description */}
           <p style={{
             fontSize: "16px", lineHeight: 1.85,
             color: c.textMuted, maxWidth: "620px", marginBottom: "2.5rem",
@@ -243,40 +255,56 @@ export default function Home({ onNavigate }) {
 
           {/* CTA Buttons */}
           <div style={{
-            display: "flex", gap: "1rem", flexWrap: "wrap",
+            display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center",
             marginBottom: "3.5rem",
             animation: "fadeUp 0.6s ease 0.5s both",
           }}>
+
+            {/* Hidden real download anchor — triggered programmatically */}
             <a
+              ref={cvAnchorRef}
               href={cv}
               download="Desire_MUGISHA_CV.pdf"
-              onMouseEnter={() => setCvHover(true)}
-              onMouseLeave={() => setCvHover(false)}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: "8px",
-                padding: "13px 28px", borderRadius: "12px",
-                background: cvHover
-                  ? "linear-gradient(135deg, #4f46e5, #7c3aed)"
-                  : "linear-gradient(135deg, #6366f1, #a78bfa)",
-                color: "#fff", fontWeight: 600, fontSize: "15px",
-                textDecoration: "none",
-                // Light mode needs a darker, tighter shadow to separate the
-                // button from a bright page background; dark mode keeps the
-                // soft colored glow.
-                boxShadow: isDark
-                  ? (cvHover ? "0 8px 30px rgba(99,102,241,0.45)" : "0 4px 20px rgba(99,102,241,0.25)")
-                  : (cvHover ? "0 10px 24px rgba(79,70,229,0.35)" : "0 6px 16px rgba(79,70,229,0.22)"),
-                transition: "all 0.25s",
-                transform: cvHover ? "translateY(-2px)" : "none",
-              }}
+              style={{ display: "none" }}
+              tabIndex={-1}
+              aria-hidden="true"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              Download CV
+              {" "}
             </a>
+
+            {/* Download / Preview CV toggle button */}
+            <button
+              type="button"
+              onClick={handleCvClick}
+              className={`cv-toggle-btn${cvMorphing ? " is-morphing" : ""}`}
+              style={{ "--cv-accent": c.accent }}
+              aria-label={cvMode === "download" ? "Download CV" : "Preview CV"}
+            >
+              <span className="cv-toggle-circle">
+                {/* Download icon */}
+                <svg
+                  className={`cv-toggle-icon${cvMode === "download" ? " is-active" : ""}`}
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                {/* Eye / preview icon */}
+                <svg
+                  className={`cv-toggle-icon${cvMode === "preview" ? " is-active" : ""}`}
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </span>
+              <span className="cv-toggle-text">
+                {cvMode === "download" ? "Download CV" : "Preview CV"}
+              </span>
+            </button>
 
             <button
               onMouseEnter={() => setWorkHover(true)}
@@ -301,7 +329,6 @@ export default function Home({ onNavigate }) {
           </div>
         </div>
 
-        {/* Scroll hint */}
         <div style={{
           position: "absolute", bottom: "2rem", left: "50%", transform: "translateX(-50%)",
           display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
@@ -323,6 +350,72 @@ export default function Home({ onNavigate }) {
         @keyframes blink     { 0%,100% { opacity:1 } 50% { opacity:0 } }
         @keyframes pulse     { 0%,100% { box-shadow:0 0 6px #22c55e } 50% { box-shadow:0 0 14px #22c55e } }
         @keyframes scrollLine { 0% { transform:scaleY(0); transform-origin:top } 50% { transform:scaleY(1); transform-origin:top } 51% { transform:scaleY(1); transform-origin:bottom } 100% { transform:scaleY(0); transform-origin:bottom } }
+
+        /* ---- Download / Preview CV toggle button ---- */
+        .cv-toggle-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          background: transparent;
+          border: 2px solid var(--cv-accent, rgb(91, 91, 240));
+          border-radius: 50px;
+          padding: 5px 22px 5px 5px;
+          cursor: pointer;
+          transition: width 0.35s ease, padding 0.35s ease, box-shadow 0.25s ease, transform 0.25s ease;
+          font-family: inherit;
+        }
+        .cv-toggle-btn:hover {
+          box-shadow: 0 6px 18px color-mix(in srgb, var(--cv-accent, rgb(91,91,240)) 35%, transparent);
+          transform: translateY(-2px);
+        }
+        .cv-toggle-btn.is-morphing {
+          padding-right: 5px;
+          width: 55px;
+        }
+        .cv-toggle-btn.is-morphing .cv-toggle-text {
+          opacity: 0;
+          width: 0;
+        }
+
+        .cv-toggle-circle {
+          position: relative;
+          flex-shrink: 0;
+          height: 43px;
+          width: 43px;
+          border-radius: 50%;
+          background-color: var(--cv-accent, rgb(91, 91, 240));
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform 0.35s ease;
+        }
+        .cv-toggle-btn.is-morphing .cv-toggle-circle {
+          transform: rotate(180deg) scale(0.92);
+        }
+
+        .cv-toggle-icon {
+          position: absolute;
+          width: 22px;
+          height: 22px;
+          color: #fff;
+          opacity: 0;
+          transform: scale(0.6);
+          transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .cv-toggle-icon.is-active {
+          opacity: 1;
+          transform: scale(1);
+        }
+
+        .cv-toggle-text {
+          font-size: 15px;
+          font-weight: 600;
+          color: var(--cv-accent, rgb(91, 91, 240));
+          white-space: nowrap;
+          overflow: hidden;
+          transition: opacity 0.2s ease, width 0.2s ease;
+          opacity: 1;
+        }
       `}</style>
     </div>
   );
