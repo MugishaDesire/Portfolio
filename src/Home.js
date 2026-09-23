@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useTheme, useColors } from "./ThemeContext";
-import cv from "./Assets/Desire_MUGISHA_CV.pdf";
+import cv from "./Assets/Resume.pdf";
 
 function useTypewriter(words, speed = 80, pause = 1800) {
   const [display, setDisplay] = useState("");
@@ -114,7 +114,15 @@ export default function Home({ onNavigate }) {
     if (cvMode === "download") {
       cvAnchorRef.current?.click();
     } else {
-      window.open(cv, "_blank", "noopener,noreferrer");
+      const width = Math.min(900, window.screen.availWidth - 80);
+      const height = Math.min(window.screen.availHeight - 80, 1000);
+      const left = Math.round((window.screen.availWidth - width) / 2 + (window.screenLeft ?? window.screenX ?? 0));
+      const top = Math.round((window.screen.availHeight - height) / 2 + (window.screenTop ?? window.screenY ?? 0));
+      window.open(
+        cv,
+        "cvPreview",
+        `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,status=no`
+      );
     }
 
     setCvMorphing(true);
@@ -264,7 +272,7 @@ export default function Home({ onNavigate }) {
             <a
               ref={cvAnchorRef}
               href={cv}
-              download="Desire_MUGISHA_CV.pdf"
+              download="Resume.pdf"
               style={{ display: "none" }}
               tabIndex={-1}
               aria-hidden="true"
