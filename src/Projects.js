@@ -7,6 +7,7 @@ const projects = [
     desc: "Full-stack shopping app with multi-role auth, cart, wishlist, orders & admin dashboard.",
     tech: ["React", "Node.js", "MySQL"],
     icon: "🛍️",
+    link: "https://myshop-plum-six.vercel.app/",
     details: {
       overview:
         "MyShop is a production-ready e-commerce web app built with React and Node.js. It supports three distinct user roles — Admin, Courier, and Customer — each with their own dashboard and access controls. Every screen was designed with a clean, modern aesthetic: a dark-toned palette, smooth micro-animations, and a responsive layout that works seamlessly across desktop and mobile.",
@@ -73,6 +74,49 @@ const projects = [
         "User Dashboard", "Admin Dashboard", "Courier Dashboard",
         "Login", "Signup", "Verify OTP", "Forgot Password", "Reset Password",
       ],
+    },
+  },
+  {
+    title: "Pesa – Budgeting App",
+    desc: "Mobile budgeting app: pay your savings first, budget what is left, and count an expense only once it is paid.",
+    tech: ["React Native", "Expo", "TypeScript"],
+    icon: "💰",
+    status: "In development",
+    details: {
+      overview:
+        "Pesa helps people protect their savings before they spend. Each month the user sets how much they have and how much to save, pays the savings through mobile money, and only then unlocks budgets for what is left. Expenses are recorded against a budget only after the payment is confirmed. The app has a green, card-based design with a full light and dark mode.",
+      features: [
+        { icon: "🏦", label: "Savings First",      text: "Budgets stay locked until the month's savings are paid, so savings are never spent by accident." },
+        { icon: "🥧", label: "Category Budgets",   text: "Split what is left across categories, with live warnings when a budget is nearly or fully used." },
+        { icon: "📲", label: "Pay-then-Record",    text: "Expenses count against a budget only after the mobile money payment is confirmed." },
+        { icon: "📊", label: "Reports",            text: "Monthly report with a preview before the CSV download." },
+        { icon: "🌙", label: "Light & Dark Mode",  text: "Theme switch in Profile, remembered between visits." },
+        { icon: "🔐", label: "OTP Sign-in",        text: "Sign up, OTP verification and a forgot-password email flow." },
+      ],
+      pages: [
+        "Login", "Create Account", "Verify OTP", "Forgot Password",
+        "Dashboard", "Budgets", "Expenses", "Add Expense", "Reports", "Profile",
+      ],
+    },
+  },
+  {
+    title: "GS Kigeme A – School Website",
+    desc: "The official website for GS Kigeme A school, with a staff dashboard to manage everything the public sees.",
+    tech: ["Web"], // TODO: replace with the real stack (e.g. "HTML", "CSS", "PHP")
+    icon: "🏫",
+    link: "http://gs-kigeme-a.rf.gd/",
+    details: {
+      overview:
+        "A public website for GS Kigeme A that gives parents, students and visitors a single place to learn about the school and get in touch. Behind it is a staff dashboard where school staff set and update all the information shown on the website, so no developer is needed for day-to-day changes.",
+      features: [
+        { icon: "🛠️", label: "Staff Dashboard", text: "School staff log in to add, edit and remove all the information that is visible on the website." },
+        { icon: "🌐", label: "Public Website",  text: "Live online and open to parents, students and the community, always showing what staff have published." },
+        { icon: "📰", label: "School Info",     text: "Information about the school and its activities in one place." },
+        { icon: "📞", label: "Contact",         text: "Easy ways for visitors to reach the school." },
+        { icon: "📱", label: "Mobile Friendly", text: "Readable on phones, where most visitors browse." },
+      ],
+      // TODO: replace with the real pages of the site
+      pages: ["Home", "About", "News", "Contact", "Staff Login", "Staff Dashboard"],
     },
   },
   {
@@ -202,6 +246,28 @@ function Modal({ project, onClose }) {
             </div>
           </div>
         </div>
+
+        {/* Live link / status */}
+        {project.link ? (
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-block", marginBottom: "1.2rem",
+              padding: "8px 18px", borderRadius: "999px",
+              background: "linear-gradient(135deg, #6366f1, #a78bfa)",
+              color: "#fff", fontSize: "13px", fontWeight: 600, textDecoration: "none",
+            }}
+          >Visit live site ↗</a>
+        ) : project.status ? (
+          <span style={{
+            display: "inline-block", marginBottom: "1.2rem",
+            padding: "6px 14px", borderRadius: "999px",
+            background: c.badgeBg, color: c.accentSoft,
+            border: `1px solid ${c.badgeBorder}`, fontSize: "12px", fontWeight: 600,
+          }}>{project.status}</span>
+        ) : null}
 
         {/* Overview */}
         <p style={{ color: c.textMuted, lineHeight: 1.8, fontSize: "14px", marginBottom: "1.5rem" }}>
@@ -423,6 +489,21 @@ export default function Projects() {
               }}>
                 View details →
               </div>
+              {p.link && (
+                <a
+                  href={p.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={e => e.stopPropagation()}
+                  style={{
+                    display: "inline-block", marginTop: "0.8rem",
+                    fontSize: "12px", fontWeight: 600, color: c.accent, textDecoration: "none",
+                  }}
+                >Visit site ↗</a>
+              )}
+              {p.status && !p.link && (
+                <div style={{ marginTop: "0.8rem", fontSize: "12px", color: c.textSubtle }}>{p.status}</div>
+              )}
             </div>
           ))}
         </div>

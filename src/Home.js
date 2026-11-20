@@ -47,11 +47,7 @@ export default function Home({ onNavigate }) {
 
   const [workHover, setWorkHover] = useState(false);
 
-  // "preview"  -> clicking opens the CV in a new tab, then morphs into "download".
-  // "download" -> clicking downloads the CV, then morphs back to "preview".
-  // Starts on "preview" so the first click always opens the CV for review
-  // before a download is triggered. This repeats indefinitely so both
-  // actions stay available at all times.
+ 
   const [cvMode, setCvMode] = useState("preview");
   const [cvMorphing, setCvMorphing] = useState(false);
   const cvAnchorRef = useRef(null);
@@ -109,7 +105,7 @@ export default function Home({ onNavigate }) {
 
   function handleCvClick(e) {
     e.preventDefault();
-    if (cvMorphing) return; // ignore rapid double-clicks mid-animation
+    if (cvMorphing) return; 
 
     if (cvMode === "download") {
       cvAnchorRef.current?.click();
